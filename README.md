@@ -23,7 +23,7 @@ Just add this Swift package as a dependency to your `Package.swift`
 .package(url: "https://github.com/crelies/TVDatePicker.git", from: "0.1.0")
 ```
 
-## Usage
+## 🧭 Usage
 
 The following code snippet shows how to use the `DatePicker` view in your `tvOS` application:
 
