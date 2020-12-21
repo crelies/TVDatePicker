@@ -17,4 +17,12 @@ public enum DateFormatters {
         dateFormatter.timeStyle = .none
         return dateFormatter
     }()
+
+    /// A date time formatter which uses the `short` date style and `short` time style.
+    public static var dateTimeFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        return dateFormatter
+    }()
 }
