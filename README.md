@@ -42,3 +42,10 @@ TVDatePicker(
 
 The `DatePicker` view is implemented by using multiple `Picker`s with the `SegmentedPickerStyle` inside a `List` / `VStack`.
 Each `Picker` represents a date component like `year`, `month` or `date`. Due to issues with the focus engine the implementation slightly differs for the supported tvOS versions `13.0`, `14.0` and > `14.0`. But I think that you can ignore this detail in most cases.
+
+## 🔒 Limitations
+
+- The `DatePicker` was only tested with the `Gregorian calendar`.
+- The `year` component displays only the next `10` years starting from `minimumDate`.
+- Currently the `hourAndMinute` component only supports the `24-hour` mode and not the `am/pm` mode.
+- The `hourAndMinute` component supports only steps by five for the `minute`. 
