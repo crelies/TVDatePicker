@@ -77,7 +77,7 @@ public struct TVDatePicker<Label: View>: View {
                 .sheet(isPresented: $isSheetPresented, onDismiss: {
                     isSheetPresented = false
                 }) {
-                    if #available(tvOS 14.3, *) {
+                    if #available(tvOS 14.2, *) {
                         NavigationView(content: navigationViewContent)
                     // We have to avoid a navigation view on tvOS 14 because the focus engine is broken after focusing the dismiss button in the toolbar.
                     } else if #available(tvOS 14, *) {
