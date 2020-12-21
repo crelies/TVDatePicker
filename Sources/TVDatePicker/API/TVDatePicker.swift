@@ -59,8 +59,8 @@ public struct TVDatePicker<Label: View>: View {
         public static var month: Components { Components(rawValue: 1 << 2) }
         /// Displays the day based on the locale.
         public static var date: Components { Components(rawValue: 1 << 3) }
-        /// Displays day, month, and year based on the locale.
-        public static var all: Components { [.year, .month, .date] }
+        /// Displays day, month, year, hour and minute components based on the locale.
+        public static var all: Components { [.year, .month, .date, .hourAndMinute] }
 
         public var rawValue: Int8
 
@@ -114,7 +114,7 @@ public struct TVDatePicker<Label: View>: View {
     ///   - titleKey: The key for the localized title of self, describing its purpose.
     ///   - selection: The date value being displayed and selected.
     ///   - minimumDate: The minimum date of the date picker view.
-    ///   - displayedComponents: The date components that user is able to view and edit, defaults to `.all` alias `[.year, .month, .date]`.
+    ///   - displayedComponents: The date components that user is able to view and edit, defaults to `.all` alias `[.year, .month, .date, .hourAndMinute]`.
     ///   - calendar: The calendar used by the date picker view, defaults to `.current`.
     ///   - dateFormatter: The date formatter used for displaying the current selection, defaults to `DateFormatters.defaultFormatter`.
     ///   - label: A view that describes the use of the date.
