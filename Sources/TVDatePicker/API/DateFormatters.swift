@@ -8,9 +8,9 @@
 
 import Foundation
 
-/// <#Description#>
+/// Helper type which manages the default date formatter used by the date picker view.
 public enum DateFormatters {
-    /// <#Description#>
+    /// The default date formatter which uses the `short` date style and `none` time style.
     public static var defaultFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
