@@ -8,9 +8,10 @@
 
 import SwiftUI
 
-/// <#Description#>
+/// A `SwiftUI` date picker view, especially for tvOS.
 public struct TVDatePicker<Label: View>: View {
     // MARK: - Private
+
     private let pickerStyle = SegmentedPickerStyle()
 
     private var currentYear: Int {
@@ -31,6 +32,7 @@ public struct TVDatePicker<Label: View>: View {
     @State private var selectedDay: Int = 0
 
     // MARK: - Internal
+
     var titleKey: LocalizedStringKey
     @Binding var selection: Date
     var minimumDate: Date
@@ -41,15 +43,15 @@ public struct TVDatePicker<Label: View>: View {
 
     // MARK: - Public
 
-    /// <#Description#>
+    /// Represents the available components of the date picker view.
     public struct Components: OptionSet {
-        /// <#Description#>
+        /// Displays the year based on the locale.
         public static var year: Components { Components(rawValue: 1) }
-        /// <#Description#>
+        /// Displays the month based on the locale.
         public static var month: Components { Components(rawValue: 1 << 1) }
-        /// <#Description#>
+        /// Displays the day based on the locale.
         public static var date: Components { Components(rawValue: 1 << 2) }
-        /// <#Description#>
+        /// Displays day, month, and year based on the locale.
         public static var all: Components { [.year, .month, .date] }
 
         public var rawValue: Int8
@@ -88,16 +90,16 @@ public struct TVDatePicker<Label: View>: View {
         )
     }
 
-    /// <#Description#>
+    /// Initializes the date picker view with the given values.
     ///
     /// - Parameters:
-    ///   - titleKey: <#titleKey description#>
-    ///   - selection: <#selection description#>
-    ///   - minimumDate: <#minimumDate description#>
-    ///   - displayedComponents: <#displayedComponents description#>
-    ///   - calendar: <#calendar description#>
-    ///   - dateFormatter: <#formatter description#>
-    ///   - label: <#title description#>
+    ///   - titleKey: The key for the localized title of self, describing its purpose.
+    ///   - selection: The date value being displayed and selected.
+    ///   - minimumDate: The minimum date of the date picker view.
+    ///   - displayedComponents: The date components that user is able to view and edit, defaults to `[.year, .month, .date]`.
+    ///   - calendar: The calendar used by the date picker view, defaults to `.current`.
+    ///   - dateFormatter: The date formatter used for displaying the current selection.
+    ///   - label: A view that describes the use of the date.
     public init(
         _ titleKey: LocalizedStringKey,
         selection: Binding<Date>,
@@ -120,7 +122,7 @@ public struct TVDatePicker<Label: View>: View {
 private extension TVDatePicker {
     func content() -> some View {
         List {
-            Text(dateFormatter.string(from: selection)).font(.title)
+            Text(dateFormatter.string(from: selection)).font(.headline)
 
             if displayedComponents.contains(.year) {
                 Picker(selection: $selectedYear.onChange(didChangeYear), label: Text("Year")) {
@@ -174,7 +176,12 @@ private extension TVDatePicker {
     }
 
     func updateDate() {
-        let dateComponents = DateComponents(calendar: calendar, year: selectedYear, month: selectedMonth + 1, day: selectedDay + 1)
+        let dateComponents = DateComponents(
+            calendar: calendar,
+            year: selectedYear,
+            month: selectedMonth + 1,
+            day: selectedDay + 1
+        )
 
         guard dateComponents.isValidDate(in: calendar) else {
             return
