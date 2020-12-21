@@ -77,14 +77,24 @@ public struct TVDatePicker<Label: View>: View {
                 .sheet(isPresented: $isSheetPresented, onDismiss: {
                     isSheetPresented = false
                 }) {
-                    NavigationView {
-                        content()
-                            .navigationTitle(title: .init(titleKey))
-                            .toolbar(trailing: Button(action: {
-                                isSheetPresented = false
-                            }, label: {
-                                Image(systemName: "xmark")
-                            }))
+                    if #available(tvOS 14.3, *) {
+                        NavigationView(content: navigationViewContent)
+                    // We have to avoid a navigation view on tvOS 14 because the focus engine is broken after focusing the dismiss button in the toolbar.
+                    } else if #available(tvOS 14, *) {
+                        VStack {
+                            HStack {
+                                Text(titleKey).foregroundColor(.secondary).font(.title2)
+                                dismissButton()
+                            }
+
+                            Spacer()
+
+                            navigationViewContent()
+
+                            Spacer()
+                        }
+                    } else {
+                        NavigationView(content: navigationViewContent)
                     }
                 }
         )
@@ -120,41 +130,53 @@ public struct TVDatePicker<Label: View>: View {
 }
 
 private extension TVDatePicker {
-    func content() -> some View {
-        List {
-            Text(dateFormatter.string(from: selection)).font(.headline)
+    @ViewBuilder func navigationViewContent() -> some View {
+        VStack(alignment: .leading, content: content)
+            .onAppear(perform: onAppear)
+            .navigationTitle(title: .init(titleKey))
+            .toolbar(trailing: dismissButton())
+    }
 
-            if displayedComponents.contains(.year) {
-                Picker(selection: $selectedYear.onChange(didChangeYear), label: Text("Year")) {
-                    ForEach(currentYear...(currentYear + 10), id: \.self) { year in
-                        Text(String(year))
-                        .tag(year)
-                    }
-                }
-                .pickerStyle(pickerStyle)
-            }
+    @ViewBuilder func content() -> some View {
+        Text(dateFormatter.string(from: selection)).font(.headline)
 
-            if displayedComponents.contains(.month) {
-                Picker(selection: $selectedMonth.onChange(didChangeMonth), label: Text("Month")) {
-                    ForEach(months) { month in
-                        Text(dateFormatter.shortMonthSymbols[month - 1])
-                        .tag(month)
-                    }
+        if displayedComponents.contains(.year) {
+            Picker(selection: $selectedYear.onChange(didChangeYear), label: Text("Year")) {
+                ForEach(currentYear...(currentYear + 10), id: \.self) { year in
+                    Text(String(year))
+                    .tag(year)
                 }
-                .pickerStyle(pickerStyle)
             }
-
-            if displayedComponents.contains(.date) {
-                Picker(selection: $selectedDay.onChange(didChangeDay), label: Text("Day")) {
-                    ForEach(days) { day in
-                        Text("\(day)")
-                        .tag(day)
-                    }
-                }
-                .pickerStyle(pickerStyle)
-            }
+            .pickerStyle(pickerStyle)
         }
-        .onAppear(perform: onAppear)
+
+        if displayedComponents.contains(.month) {
+            Picker(selection: $selectedMonth.onChange(didChangeMonth), label: Text("Month")) {
+                ForEach(months) { month in
+                    Text(dateFormatter.shortMonthSymbols[month - 1])
+                    .tag(month)
+                }
+            }
+            .pickerStyle(pickerStyle)
+        }
+
+        if displayedComponents.contains(.date) {
+            Picker(selection: $selectedDay.onChange(didChangeDay), label: Text("Day")) {
+                ForEach(days) { day in
+                    Text("\(day)")
+                    .tag(day)
+                }
+            }
+            .pickerStyle(pickerStyle)
+        }
+    }
+
+    func dismissButton() -> some View {
+        Button(action: {
+            isSheetPresented = false
+        }, label: {
+            Image(systemName: "xmark")
+        })
     }
 
     func onAppear() {
