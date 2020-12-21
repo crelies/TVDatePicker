@@ -106,9 +106,9 @@ public struct TVDatePicker<Label: View>: View {
     ///   - titleKey: The key for the localized title of self, describing its purpose.
     ///   - selection: The date value being displayed and selected.
     ///   - minimumDate: The minimum date of the date picker view.
-    ///   - displayedComponents: The date components that user is able to view and edit, defaults to `[.year, .month, .date]`.
+    ///   - displayedComponents: The date components that user is able to view and edit, defaults to `.all` alias `[.year, .month, .date]`.
     ///   - calendar: The calendar used by the date picker view, defaults to `.current`.
-    ///   - dateFormatter: The date formatter used for displaying the current selection.
+    ///   - dateFormatter: The date formatter used for displaying the current selection, defaults to `DateFormatters.defaultFormatter`.
     ///   - label: A view that describes the use of the date.
     public init(
         _ titleKey: LocalizedStringKey,
