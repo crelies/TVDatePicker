@@ -14,15 +14,19 @@ public struct TVDatePicker<Label: View>: View {
 
     private let pickerStyle = SegmentedPickerStyle()
 
-    private var currentYear: Int {
+    private var currentlySelectedYear: Int {
         calendar.component(.year, from: selection)
+    }
+
+    private var minimumYear: Int {
+        calendar.component(.year, from: minimumDate)
     }
 
     private var months: Range<Int> {
         calendar.range(of: .month, in: .year, for: minimumDate) ?? Range(0...0)
     }
 
-    private var days: Range<Int> {
+    private var daysInSelectedMonth: Range<Int> {
         calendar.range(of: .day, in: .month, for: selection) ?? Range(0...0)
     }
 
@@ -164,7 +168,9 @@ private extension TVDatePicker {
 
         if displayedComponents.contains(.year) {
             Picker(selection: $selectedYear.onChange(didChangeYear), label: Text("Year")) {
-                ForEach((currentYear - 5)...(currentYear + 5), id: \.self) { year in
+                let lowerBound = max(minimumYear, (currentlySelectedYear - 5))
+                let upperBound = max(minimumYear + 10, (currentlySelectedYear + 5))
+                ForEach(lowerBound...upperBound, id: \.self) { year in
                     Text(String(year))
                     .tag(year)
                 }
@@ -184,7 +190,7 @@ private extension TVDatePicker {
 
         if displayedComponents.contains(.date) {
             Picker(selection: $selectedDay.onChange(didChangeDay), label: Text("Day")) {
-                ForEach(days, id: \.self) { day in
+                ForEach(daysInSelectedMonth, id: \.self) { day in
                     Text("\(day)")
                     .tag(day)
                 }
