@@ -23,10 +23,12 @@ public struct TVDatePicker<Label: View>: View {
     }
 
     private var days: Range<Int> {
-        calendar.range(of: .day, in: .month, for: minimumDate) ?? Range(0...0)
+        calendar.range(of: .day, in: .month, for: selection) ?? Range(0...0)
     }
 
-    private var hours: Range<Int> { Range(0...23) }
+    private var hours: Range<Int> {
+        calendar.range(of: .hour, in: .day, for: minimumDate) ?? Range(0...0)
+    }
 
     private var minutes: Array<Int> { Array(stride(from: 0, to: 60, by: 5)) }
 
@@ -172,7 +174,7 @@ private extension TVDatePicker {
 
         if displayedComponents.contains(.month) {
             Picker(selection: $selectedMonth.onChange(didChangeMonth), label: Text("Month")) {
-                ForEach(months) { month in
+                ForEach(months, id: \.self) { month in
                     Text(dateFormatter.shortMonthSymbols[month - 1])
                     .tag(month)
                 }
@@ -182,7 +184,7 @@ private extension TVDatePicker {
 
         if displayedComponents.contains(.date) {
             Picker(selection: $selectedDay.onChange(didChangeDay), label: Text("Day")) {
-                ForEach(days) { day in
+                ForEach(days, id: \.self) { day in
                     Text("\(day)")
                     .tag(day)
                 }
@@ -222,53 +224,97 @@ private extension TVDatePicker {
     }
 
     func onAppear() {
+        updateSelectedDateComponents(from: selection)
+    }
+
+    func didChangeYear(_ year: Int) {
+        let dateComponents = DateComponents(
+            calendar: calendar,
+            year: year,
+            month: selectedMonth,
+            day: selectedDay,
+            hour: selectedHour,
+            minute: selectedMinute
+        )
+        updateDate(with: dateComponents)
+    }
+
+    func didChangeMonth(_ month: Int) {
+        let dateComponents = DateComponents(
+            calendar: calendar,
+            year: selectedYear,
+            month: month,
+            day: selectedDay,
+            hour: selectedHour,
+            minute: selectedMinute
+        )
+        updateDate(with: dateComponents)
+    }
+
+    func didChangeDay(_ day: Int) {
+        let dateComponents = DateComponents(
+            calendar: calendar,
+            year: selectedYear,
+            month: selectedMonth,
+            day: day,
+            hour: selectedHour,
+            minute: selectedMinute
+        )
+        updateDate(with: dateComponents)
+    }
+
+    func didChangeHour(_ hour: Int) {
+        let dateComponents = DateComponents(
+            calendar: calendar,
+            year: selectedYear,
+            month: selectedMonth,
+            day: selectedDay,
+            hour: hour,
+            minute: selectedMinute
+        )
+        updateDate(with: dateComponents)
+    }
+
+    func didChangeMinute(_ minute: Int) {
+        let dateComponents = DateComponents(
+            calendar: calendar,
+            year: selectedYear,
+            month: selectedMonth,
+            day: selectedDay,
+            hour: selectedHour,
+            minute: minute
+        )
+        updateDate(with: dateComponents)
+    }
+
+    func updateSelectedDateComponents(from selection: Date) {
         selectedYear = calendar.component(.year, from: selection)
-        selectedMonth = calendar.component(.month, from: selection) - 1
-        selectedDay = calendar.component(.day, from: selection) - 1
+        selectedMonth = calendar.component(.month, from: selection)
+        selectedDay = calendar.component(.day, from: selection)
         selectedHour = calendar.component(.hour, from: selection)
 
         let currentMinute = calendar.component(.minute, from: selection)
         selectedMinute = currentMinute - (currentMinute % 5)
     }
 
-    func didChangeYear(_ year: Int) {
-        updateDate()
-    }
+    func updateDate(with dateComponents: DateComponents) {
+        if !dateComponents.isValidDate(in: calendar) {
+            let updatedDate: Date
 
-    func didChangeMonth(_ month: Int) {
-        updateDate()
-    }
+            if let correctedDate = calendar.nextDate(after: selection, matching: dateComponents, matchingPolicy: .previousTimePreservingSmallerComponents, direction: .backward) {
+                updatedDate = correctedDate
+            } else if let correctedDate = calendar.nextDate(after: selection, matching: dateComponents, matchingPolicy: .nextTimePreservingSmallerComponents) {
+                updatedDate = correctedDate
+            } else if let date = calendar.date(from: dateComponents) {
+                updatedDate = date
+            } else {
+                updatedDate = Date()
+            }
 
-    func didChangeDay(_ day: Int) {
-        updateDate()
-    }
-
-    func didChangeHour(_ hour: Int) {
-        updateDate()
-    }
-
-    func didChangeMinute(_ minute: Int) {
-        updateDate()
-    }
-
-    func updateDate() {
-        let dateComponents = DateComponents(
-            calendar: calendar,
-            year: selectedYear,
-            month: selectedMonth + 1,
-            day: selectedDay + 1,
-            hour: selectedHour,
-            minute: selectedMinute
-        )
-
-        guard dateComponents.isValidDate(in: calendar) else {
-            return
+            self.selection = updatedDate
+            updateSelectedDateComponents(from: updatedDate)
+        } else if let selection = calendar.date(from: dateComponents) {
+            self.selection = selection
         }
-
-        guard let selection = calendar.date(from: dateComponents) else {
-            return
-        }
-
-        self.selection = selection
     }
 }
