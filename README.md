@@ -38,7 +38,7 @@ TVDatePicker(
 
 At first the view appears as a button with a horizontal stack containing the specified `label`, a `Text` view representing the current `selection` date string and a `disclosure indicator` `Image` view. If you press the button a sheet with the actual date picker view appears. The following screenshot is an example:
 
-<img src="https://github.com/crelies/TVDatePicker/tree/dev/example.png" alt="Screenshot of a date picker view usage example" width="800" height="450"></img>
+<img src="https://github.com/crelies/TVDatePicker/blob/dev/example.png" alt="Screenshot of a date picker view usage example" width="800" height="450"></img>
 
 ## 📖 Implementation
 
