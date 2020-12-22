@@ -204,7 +204,7 @@ private extension TVDatePicker {
                 .font(.subheadline)
 
             Picker(selection: $selectedHour.onChange(didChangeHour), label: Text("Hour")) {
-                ForEach(hours) { hour in
+                ForEach(hours, id: \.self) { hour in
                     Text("\(hour)")
                     .tag(hour)
                 }
