@@ -46,6 +46,7 @@ Each `Picker` represents a date component like `year`, `month` or `date`. Due to
 ## 🔒 Limitations
 
 - ⚠️ The `DatePicker` was only tested with the `Gregorian calendar`.
-- The `year` component displays only `10` years at a time (selected year +/- 5 years with respect to the year of the specified minimum date).
+- The `year` component displays only `10` years at a time (`selected year +/- 5 years` with respect to the year of the specified `minimum date`).
+- ⚠️ Currently only the `year` component respects the `minimum date`. On the contrary `all months of a year` and `all days of a month` are visible at all time.
 - Currently the `hourAndMinute` component only supports the `24-hour` mode and not the `am/pm` mode.
 - The `hourAndMinute` component supports only steps by five for the `minute`. 
