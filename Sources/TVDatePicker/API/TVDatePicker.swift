@@ -15,7 +15,7 @@ public struct TVDatePicker<Label: View>: View {
     private let pickerStyle = SegmentedPickerStyle()
 
     private var currentYear: Int {
-        calendar.component(.year, from: minimumDate)
+        calendar.component(.year, from: selection)
     }
 
     private var months: Range<Int> {
@@ -164,7 +164,7 @@ private extension TVDatePicker {
 
         if displayedComponents.contains(.year) {
             Picker(selection: $selectedYear.onChange(didChangeYear), label: Text("Year")) {
-                ForEach(currentYear...(currentYear + 10), id: \.self) { year in
+                ForEach((currentYear - 5)...(currentYear + 5), id: \.self) { year in
                     Text(String(year))
                     .tag(year)
                 }
