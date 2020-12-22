@@ -14,8 +14,6 @@ The `API` mimics the one of the native `SwiftUI` `DatePicker` available for `iOS
 
 ## ℹ️ Installation
 
-**First release published soon ...**
-
 Just add this Swift package as a dependency to your `Package.swift`:
 
 ```swift
@@ -38,6 +36,10 @@ TVDatePicker(
 ) // Available when Label conforms to View.
 ```
 
+At first the view appears as a button with a horizontal stack containing the specified `label`, a `Text` view representing the current `selection` date string and a `disclosure indicator` `Image` view. If you press the button a sheet with the actual date picker view appears. The following screenshot is an example:
+
+<img src="https://github.com/crelies/TVDatePicker/tree/dev/example.png" alt="Screenshot of a date picker view usage example" width="800" height="450"></img>
+
 ## 📖 Implementation
 
 The `DatePicker` view is implemented by using multiple `Picker`s with the `SegmentedPickerStyle` inside a `List` / `VStack`.
@@ -48,5 +50,5 @@ Each `Picker` represents a date component like `year`, `month` or `date`. Due to
 - ⚠️ The `DatePicker` was only tested with the `Gregorian calendar`.
 - The `year` component displays only `10` years at a time (`selected year +/- 5 years` with respect to the year of the specified `minimum date`).
 - ⚠️ Currently only the `year` component respects the `minimum date`. On the contrary `all months of a year` and `all days of a month` are visible at all time.
-- Currently the `hourAndMinute` component only supports the `24-hour` mode and not the `am/pm` mode.
+- Currently the `hourAndMinute` component always displays all `24 hours` of a day.
 - The `hourAndMinute` component supports only steps by five for the `minute`. 
