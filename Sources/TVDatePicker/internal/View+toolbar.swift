@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS, unavailable)
 extension View {
     func toolbar<Leading: View>(leading: Leading) -> some View {
         toolbar(leading: leading, trailing: EmptyView())

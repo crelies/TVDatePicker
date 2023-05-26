@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS, unavailable)
 /// A `SwiftUI` date picker view, especially for tvOS.
 public struct TVDatePicker<Label: View>: View {
     // MARK: - Private
@@ -149,6 +150,7 @@ public struct TVDatePicker<Label: View>: View {
     }
 }
 
+@available(iOS, unavailable)
 private extension TVDatePicker {
     @ViewBuilder func navigationViewContent() -> some View {
         VStack(alignment: .leading, content: content)

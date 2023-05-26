@@ -8,6 +8,7 @@
 
 import Foundation
 
+@available(iOS, unavailable)
 /// Helper type which manages the default date formatter used by the date picker view.
 public enum DateFormatters {
     /// The default date formatter which uses the `short` date style and `none` time style.

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS, unavailable)
 extension View {
     @ViewBuilder func navigationTitle(title: Text) -> some View {
         if #available(tvOS 14, *) {

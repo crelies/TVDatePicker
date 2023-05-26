@@ -6,6 +6,7 @@ import PackageDescription
 let package = Package(
     name: "TVDatePicker",
     platforms: [
+        .iOS(.v14),
         .tvOS(.v13)
     ],
     products: [
